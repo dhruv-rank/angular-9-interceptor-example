@@ -1,27 +1,86 @@
-# InterceptorExample
+# Angular Interceptor Example
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
+Interceptors provide a way to **intercept HTTP requests and responses to transform or handle them before passing** them along. This application is about how to implement interceptor and intercept any request.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### 1 Create Interceptor 
 
-## Code scaffolding
+- To create interceptor we have to implement the interface `HttpInterceptor` and override the method `intercept()`,which has two parameters **HttpRequest** and **HttpHandler**.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+```js
+@Injectable()
+export class PostInterceptor implements HttpInterceptor {
+    
+    jsonPlaceHolderUrl: string;
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+    constructor() {
+        //get base url from environment profile
+        this.jsonPlaceHolderUrl = environment.jsonPlaceholder;
+    }
 
-## Running unit tests
+    intercept(reqest: HttpRequest<any>, next: HttpHandler) {
+        //intercept and modify request before sending to the backend server
+        const httpsReq = reqest.clone({ url: this.jsonPlaceHolderUrl + reqest.url });    //addding 'https://jsonplaceholder.typicode.com/' to all outgoing request
+        return next.handle(httpsReq);   //send request after modifying
+    }
+}
+```
+- An interceptor may handle the request entirely, and compose a new event stream instead of invoking `next.handle()`.
+ 
+- And add the custom-created interceptor to list `HTTP_INTERCEPTORS` to provide in the application.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```js 
+ providers: [{ provide: HTTP_INTERCEPTORS, useClass: PostInterceptor, multi: true }]
+```
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### 2 Intercepted Requests
 
-## Further help
+- Intercepotr will convert request to 'https://jsonplaceholder.typicode.com/posts' that called below  before sendig to backend server: 
+```js
+getPosts(): Observable<PostModal[]> {
+   this.http.get<PostModal[]>("posts");    
+   }
+```
+![Post request screenshot](./src/assets/getPosts.jpg)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+- Intercepotr will convert request to 'https://jsonplaceholder.typicode.com/posts/id' that called below  before sendig to backend server: 
+
+
+```js
+ getPostDetail(id: number) {
+    return this.http.get<PostModal>(`posts/${id}`) 
+  }
+```
+
+![Postb by id request screenshot](./src/assets/getDetail.jpg)
+
+
+### 3 Steps To Clone It
+
+```
+git clone https://github.com/dhruv-rank/angular-9-interceptor-example
+cd angular-9-interceptor-example
+npm install
+```
+
+#### 3.1 To Run On Local-Server :
+```
+ng serve
+```
+And start with http://localhost:4200
+
+#### 3.2 Production Build 
+
+Command to build an application for **production** :
+
+```
+ng build --prod --aot=true --build-optimizer=true
+```
+- --prod flag is added to use production environment profile at build time.  
+- The Angular '**aot**' compiler converts your Angular HTML and TypeScript code into efficient JavaScript code during the build phase before the browser downloads and runs that code. Compiling your application during the build process provides a faster rendering in the browser.
+- The build-optimizer makes it easier for code minifiers to remove unused code by removing Angular-specific decorators, constructor parameters.
+
+
