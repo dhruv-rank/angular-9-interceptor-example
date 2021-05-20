@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row" *ngFor="let item of posts">
+
+        <div class="card m-2">
+            <div class="card-body row justify-content-between">
+                <div class="col-6">
+                    <h5 class="card-title"> {{item.id}}</h5>
+                    <p class="card-text"> {{item.title}}</p>
+                </div>
+                <div class="col-1">
+                    <a class="btn  ml-auto green-color" (click)="getDetail(item.id)">Get Detail</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
