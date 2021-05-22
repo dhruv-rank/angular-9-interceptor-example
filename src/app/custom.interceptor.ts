@@ -3,7 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http'
 import { environment } from '../environments/environment';
 
 @Injectable()
-export class PostInterceptor implements HttpInterceptor {
+export class CustomInterceptor implements HttpInterceptor {
     
     jsonPlaceHolderUrl: string;
 

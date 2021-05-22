@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { PostsComponent } from './posts/posts.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { PostInterceptor } from './post.interceptor';
+import { CustomInterceptor } from './custom.interceptor';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { PostInterceptor } from './post.interceptor';
     BrowserModule,
     HttpClientModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: PostInterceptor, multi: true }], // add our custom interceptor to HTTP_INTERCEPTORS
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }], // add our custom interceptor to HTTP_INTERCEPTORS
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,7 +10,7 @@ Interceptors provide a way to **intercept HTTP requests and responses to transfo
 
 ```js
 @Injectable()
-export class PostInterceptor implements HttpInterceptor {
+export class CustomInterceptor implements HttpInterceptor {
     
     jsonPlaceHolderUrl: string;
 
@@ -31,7 +31,7 @@ export class PostInterceptor implements HttpInterceptor {
 - And add the custom-created interceptor to list `HTTP_INTERCEPTORS` to provide in the application.
 
 ```js 
- providers: [{ provide: HTTP_INTERCEPTORS, useClass: PostInterceptor, multi: true }]
+ providers: [{ provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true }]
 ```
 
 
