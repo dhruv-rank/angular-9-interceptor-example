@@ -37,7 +37,7 @@ export class CustomInterceptor implements HttpInterceptor {
 
 ### 2 Intercepted Requests
 
-- Intercepotr will convert request to 'https://jsonplaceholder.typicode.com/posts' that called below  before sendig to backend server: 
+- Interceptor will convert request to 'https://jsonplaceholder.typicode.com/posts' that called below  before sendig to backend server: 
 ```js
 getPosts(): Observable<PostModal[]> {
    this.http.get<PostModal[]>("posts");    
@@ -46,7 +46,7 @@ getPosts(): Observable<PostModal[]> {
 ![Post request screenshot](./src/assets/getPosts.jpg)
 
 
-- Intercepotr will convert request to 'https://jsonplaceholder.typicode.com/posts/id' that called below  before sendig to backend server: 
+- Interceptor will convert request to 'https://jsonplaceholder.typicode.com/posts/id' that called below  before sendig to backend server: 
 
 
 ```js
